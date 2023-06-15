@@ -1,0 +1,29 @@
+services:
+  reclamation_db:
+    image: postgis/postgis:15-3.3
+    env_file:
+      - .env
+    container_name: ${PG_CONTAINER_NAME}
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - ./init/:/docker-entrypoint-initdb.d/
+      - reclamation_data:/data/postgres_reclamation
+    networks:
+      - reclamation_net
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+    networks:
+      - reclamation_net
+
+volumes:
+  reclamation_data:
+
+networks:
+  reclamation_net:
